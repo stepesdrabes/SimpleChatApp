@@ -1,9 +1,8 @@
 package cz.stepesove.simplechatapp.data.remote.repositories
 
-import cz.stepesove.simplechatapp.data.remote.AuthResult
-import cz.stepesove.simplechatapp.data.remote.responses.UserResponse
+import cz.stepesove.simplechatapp.data.remote.RequestResult
 
 interface AuthRepository {
-    suspend fun signUp(username: String, password: String): AuthResult<Unit>
-    suspend fun signIn(username: String, password: String): AuthResult<Unit>
+    suspend fun signUp(username: String, password: String): RequestResult<Unit>
+    suspend fun signIn(username: String, password: String): RequestResult<Unit>
 }

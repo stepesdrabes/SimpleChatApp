@@ -19,10 +19,10 @@ import androidx.compose.ui.text.style.TextAlign
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import cz.stepesove.simplechatapp.R
-import cz.stepesove.simplechatapp.data.remote.AuthResult
+import cz.stepesove.simplechatapp.data.remote.RequestResult
 import cz.stepesove.simplechatapp.presentation.destinations.HomeScreenDestination
 import cz.stepesove.simplechatapp.presentation.destinations.LoginScreenDestination
-import cz.stepesove.simplechatapp.presentation.register.components.ChooseAvatar
+import cz.stepesove.simplechatapp.presentation.shared.components.ChooseAvatar
 import cz.stepesove.simplechatapp.presentation.shared.components.BackAppBar
 import cz.stepesove.simplechatapp.presentation.shared.components.IconLabelButton
 import cz.stepesove.simplechatapp.presentation.shared.components.IconLabelTextField
@@ -47,23 +47,17 @@ fun RegisterScreen(
     LaunchedEffect(viewModel, context) {
         viewModel.authResults.collect { result ->
             when (result) {
-                is AuthResult.Authorized -> {
-                    navigator.navigate(HomeScreenDestination) {
-                        popUpTo(LoginScreenDestination.route) {
-                            inclusive = true
-                        }
+                is RequestResult.Ok -> navigator.navigate(HomeScreenDestination) {
+                    popUpTo(LoginScreenDestination.route) {
+                        inclusive = true
                     }
                 }
-                is AuthResult.Unauthorized -> {
-                    Toast.makeText(
-                        context,
-                        "You're not authorized",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-                is AuthResult.UnknownError -> {
-                    Toast.makeText(context, error, Toast.LENGTH_LONG).show()
-                }
+                is RequestResult.Unauthorized -> Toast.makeText(
+                    context,
+                    "You're not authorized",
+                    Toast.LENGTH_LONG
+                ).show()
+                else -> Toast.makeText(context, error, Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -114,7 +108,7 @@ fun RegisterScreen(
                         }
 
                         IconLabelTextField(
-                            iconId = R.drawable.ic_fi_rr_password,
+                            iconId = R.drawable.ic_fi_rr_lock,
                             label = stringResource(id = R.string.register_input_password_label),
                             isPassword = true
                         ) { newText ->

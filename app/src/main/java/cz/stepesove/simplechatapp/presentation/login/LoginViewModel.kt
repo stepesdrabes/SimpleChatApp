@@ -5,12 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cz.stepesove.simplechatapp.data.remote.AuthResult
+import cz.stepesove.simplechatapp.data.remote.RequestResult
 import cz.stepesove.simplechatapp.data.remote.repositories.AuthRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 class LoginViewModel(
     private val authRepository: AuthRepository
@@ -18,7 +17,7 @@ class LoginViewModel(
 
     var state by mutableStateOf(LoginState())
 
-    private val resultChannel = Channel<AuthResult<Unit>>()
+    private val resultChannel = Channel<RequestResult<Unit>>()
     val authResults = resultChannel.receiveAsFlow()
 
     fun onEvent(event: LoginUiEvent) {

@@ -1,4 +1,4 @@
-package cz.stepesove.simplechatapp.data.remote.responses
+package cz.stepesove.simplechatapp.data.remote.responses.users
 
 data class UserResponse(
     val id: String,

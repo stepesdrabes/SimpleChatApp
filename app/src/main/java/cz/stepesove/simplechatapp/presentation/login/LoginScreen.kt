@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import cz.stepesove.simplechatapp.R
-import cz.stepesove.simplechatapp.data.remote.AuthResult
+import cz.stepesove.simplechatapp.data.remote.RequestResult
 import cz.stepesove.simplechatapp.presentation.destinations.HomeScreenDestination
 import cz.stepesove.simplechatapp.presentation.destinations.LoginScreenDestination
 import cz.stepesove.simplechatapp.presentation.shared.components.BackAppBar
@@ -41,23 +41,17 @@ fun LoginScreen(
     LaunchedEffect(viewModel, context) {
         viewModel.authResults.collect { result ->
             when (result) {
-                is AuthResult.Authorized -> {
-                    navigator.navigate(HomeScreenDestination) {
-                        popUpTo(LoginScreenDestination.route) {
-                            inclusive = true
-                        }
+                is RequestResult.Ok -> navigator.navigate(HomeScreenDestination) {
+                    popUpTo(LoginScreenDestination.route) {
+                        inclusive = true
                     }
                 }
-                is AuthResult.Unauthorized -> {
-                    Toast.makeText(
-                        context,
-                        "You're not authorized",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-                is AuthResult.UnknownError -> {
-                    Toast.makeText(context, error, Toast.LENGTH_LONG).show()
-                }
+                is RequestResult.Unauthorized -> Toast.makeText(
+                    context,
+                    "You're not authorized",
+                    Toast.LENGTH_LONG
+                ).show()
+                else -> Toast.makeText(context, error, Toast.LENGTH_LONG).show()
             }
         }
     }

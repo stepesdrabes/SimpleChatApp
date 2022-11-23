@@ -1,4 +1,4 @@
-package cz.stepesove.simplechatapp.presentation.register.components
+package cz.stepesove.simplechatapp.presentation.shared.components
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import cz.stepesove.simplechatapp.R
-import cz.stepesove.simplechatapp.presentation.shared.components.RoundedImage
 
 @Composable
 fun ChooseAvatar(
+    iconId: Int = R.drawable.ic_fi_rr_mode_portrait,
     size: Dp = 128.dp,
     currentImageUrl: String?
 ) {
@@ -47,7 +47,7 @@ fun ChooseAvatar(
             modifier = Modifier
                 .size(size * (1 / 3.toFloat()))
                 .align(Alignment.Center),
-            painter = painterResource(id = R.drawable.ic_fi_rr_mode_portrait),
+            painter = painterResource(id = iconId),
             tint = MaterialTheme.colors.onSurface,
             contentDescription = null
         )

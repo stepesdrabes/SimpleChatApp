@@ -3,18 +3,18 @@ package cz.stepesove.simplechatapp.data.remote.api
 import cz.stepesove.simplechatapp.data.local.models.auth.LoginModel
 import cz.stepesove.simplechatapp.data.local.models.auth.RegisterModel
 import cz.stepesove.simplechatapp.data.remote.HttpRoutes
-import cz.stepesove.simplechatapp.data.remote.responses.TokenResponse
-import cz.stepesove.simplechatapp.data.remote.responses.UserResponse
+import cz.stepesove.simplechatapp.data.remote.responses.auth.TokenResponse
 import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 
 interface AuthApi {
 
+    @Multipart
     @POST(HttpRoutes.AUTH_SIGNUP_URL)
     suspend fun signUp(
-        @Body request: RegisterModel
+        @Part request: RegisterModel
     )
 
     @POST(HttpRoutes.AUTH_SIGNIN_URL)

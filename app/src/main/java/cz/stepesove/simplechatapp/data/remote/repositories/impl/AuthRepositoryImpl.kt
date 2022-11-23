@@ -4,37 +4,34 @@ import android.content.SharedPreferences
 import coil.network.HttpException
 import cz.stepesove.simplechatapp.data.local.models.auth.LoginModel
 import cz.stepesove.simplechatapp.data.local.models.auth.RegisterModel
-import cz.stepesove.simplechatapp.data.remote.AuthResult
+import cz.stepesove.simplechatapp.data.remote.RequestResult
 import cz.stepesove.simplechatapp.data.remote.api.AuthApi
 import cz.stepesove.simplechatapp.data.remote.repositories.AuthRepository
-import cz.stepesove.simplechatapp.data.remote.responses.UserResponse
 
 class AuthRepositoryImpl(
     private val api: AuthApi,
-    private val prefs: SharedPreferences
+    private val sharedPreferences: SharedPreferences
 ) : AuthRepository {
 
-    override suspend fun signUp(username: String, password: String): AuthResult<Unit> {
+    override suspend fun signUp(username: String, password: String): RequestResult<Unit> {
         return try {
             api.signUp(
                 request = RegisterModel(
                     username = username,
-                    password = password
+                    password = password,
+                    image = null
                 )
             )
             signIn(username, password)
         } catch (e: HttpException) {
-            if (e.response.code == 401) {
-                AuthResult.Unauthorized()
-            } else {
-                AuthResult.UnknownError()
-            }
+            if (e.response.code == 401) RequestResult.Unauthorized()
+            else RequestResult.NotFound()
         } catch (e: Exception) {
-            AuthResult.UnknownError()
+            RequestResult.NotFound()
         }
     }
 
-    override suspend fun signIn(username: String, password: String): AuthResult<Unit> {
+    override suspend fun signIn(username: String, password: String): RequestResult<Unit> {
         return try {
             val response = api.signIn(
                 request = LoginModel(
@@ -42,18 +39,13 @@ class AuthRepositoryImpl(
                     password = password
                 )
             )
-            prefs.edit()
-                .putString("jwt", response.token)
-                .apply()
-            AuthResult.Authorized()
+            sharedPreferences.edit().putString("jwt", response.accessToken).apply()
+            RequestResult.Ok()
         } catch (e: HttpException) {
-            if (e.response.code == 401) {
-                AuthResult.Unauthorized()
-            } else {
-                AuthResult.UnknownError()
-            }
+            if (e.response.code == 401) RequestResult.Unauthorized()
+            else RequestResult.NotFound()
         } catch (e: Exception) {
-            AuthResult.UnknownError()
+            RequestResult.NotFound()
         }
     }
 }

@@ -3,15 +3,19 @@ package cz.stepesove.simplechatapp.presentation.home.components.conversation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 
 @Composable
@@ -22,7 +26,7 @@ fun ConversationRoundedImage(
     contentDescription: String? = null,
     strokeWidth: Dp = 3.dp
 ) {
-    Image(
+    Box(
         modifier = modifier
             .size(size)
             .clip(CircleShape)
@@ -31,15 +35,21 @@ fun ConversationRoundedImage(
                 width = strokeWidth,
                 color = MaterialTheme.colors.background,
                 shape = CircleShape
+            )
+    ) {
+        Image(
+            modifier = modifier
+                .align(Alignment.Center)
+                .size(size - 2.dp),
+            painter = rememberAsyncImagePainter(
+                ImageRequest.Builder(LocalContext.current).data(data = url)
+                    .apply(block = fun ImageRequest.Builder.() {
+                        crossfade(true)
+                        crossfade(500)
+                        transformations(CircleCropTransformation())
+                    }).build()
             ),
-        painter = rememberImagePainter(
-            data = url,
-            builder = {
-                crossfade(true)
-                crossfade(500)
-                transformations(CircleCropTransformation())
-            }
-        ),
-        contentDescription = contentDescription
-    )
+            contentDescription = contentDescription
+        )
+    }
 }
