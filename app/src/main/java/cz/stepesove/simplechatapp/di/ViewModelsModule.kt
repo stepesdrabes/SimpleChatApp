@@ -1,5 +1,6 @@
 package cz.stepesove.simplechatapp.di
 
+import cz.stepesove.simplechatapp.presentation.convos.ConvoViewModel
 import cz.stepesove.simplechatapp.presentation.create_convo.CreateConvoViewModel
 import cz.stepesove.simplechatapp.presentation.home.HomeViewModel
 import cz.stepesove.simplechatapp.presentation.login.LoginViewModel
@@ -12,4 +13,5 @@ val ViewModelsModule = module {
     viewModel { RegisterViewModel(get()) }
     viewModel { HomeViewModel(get(), get()) }
     viewModel { CreateConvoViewModel(get(), get()) }
+    viewModel { ConvoViewModel(get()) }
 }

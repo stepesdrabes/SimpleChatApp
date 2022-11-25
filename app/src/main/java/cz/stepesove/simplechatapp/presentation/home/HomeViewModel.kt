@@ -18,15 +18,29 @@ class HomeViewModel(
     private val peopleRepository: PeopleRepository,
 ) : ViewModel() {
 
-    var conversationsLoading by mutableStateOf(false)
     var peopleLoading by mutableStateOf(false)
+    var conversationsLoading by mutableStateOf(false)
+    var currentUserLoading by mutableStateOf(false)
 
-    var conversationsState by mutableStateOf<List<ConversationResponse>>(emptyList())
     var peopleState by mutableStateOf<List<UserResponse>>(emptyList())
+    var conversationsState by mutableStateOf<List<ConversationResponse>>(emptyList())
+    var currentUserState by mutableStateOf<UserResponse?>(null)
 
     init {
+        currentUserLoading = true
+
+        loadCurrentUser()
         loadConversations()
         loadPeople()
+    }
+
+    private fun loadCurrentUser() {
+        viewModelScope.launch {
+            currentUserLoading = true
+            val result = peopleRepository.currentUser()
+            currentUserState = result.data
+            currentUserLoading = false
+        }
     }
 
     fun loadConversations() {

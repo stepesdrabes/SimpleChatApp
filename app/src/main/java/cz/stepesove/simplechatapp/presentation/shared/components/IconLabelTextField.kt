@@ -24,7 +24,8 @@ import cz.stepesove.simplechatapp.presentation.shared.theme.textSize
 
 @Composable
 fun IconLabelTextField(
-    iconId: Int,
+    modifier: Modifier = Modifier.fillMaxWidth(),
+    iconId: Int? = null,
     label: String,
     isPassword: Boolean = false,
     onValueChange: (TextFieldValue) -> Unit
@@ -33,7 +34,7 @@ fun IconLabelTextField(
     var visible by remember { mutableStateOf(false) }
 
     TextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         value = value,
         shape = MaterialTheme.shapes.medium,
         textStyle = TextStyle(
@@ -42,14 +43,16 @@ fun IconLabelTextField(
         ),
         keyboardOptions = KeyboardOptions(keyboardType = if (isPassword) KeyboardType.Password else KeyboardType.Text),
         leadingIcon = {
-            Icon(
-                modifier = Modifier.padding(
-                    start = MaterialTheme.spacing.pagePadding,
-                    end = MaterialTheme.spacing.medium
-                ),
-                painter = painterResource(id = iconId),
-                contentDescription = null
-            )
+            iconId?.let {
+                Icon(
+                    modifier = Modifier.padding(
+                        start = MaterialTheme.spacing.pagePadding,
+                        end = MaterialTheme.spacing.medium
+                    ),
+                    painter = painterResource(id = it),
+                    contentDescription = null
+                )
+            }
         },
         visualTransformation = if (!isPassword || visible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {

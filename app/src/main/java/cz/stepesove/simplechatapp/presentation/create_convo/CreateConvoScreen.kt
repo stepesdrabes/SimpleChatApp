@@ -7,8 +7,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,14 +26,13 @@ import org.koin.androidx.compose.koinViewModel
 @Destination
 @Composable
 fun CreateConvoScreen(
+    currentUser: UserResponse,
     navigator: DestinationsNavigator
 ) {
     val viewModel: CreateConvoViewModel = koinViewModel()
 
     Scaffold(
-        topBar = {
-            BackAppBar(navigator = navigator)
-        },
+        topBar = { BackAppBar(navigator = navigator) },
     ) {
         Box(modifier = Modifier.padding(it)) {
             LazyColumn(
@@ -78,10 +75,8 @@ fun CreateConvoScreen(
                         IconLabelButton(
                             label = stringResource(id = R.string.create_convo_create_button_label),
                             iconId = R.drawable.ic_fi_rr_check,
-                            enabled = !viewModel.convoName.text.isEmpty(),
-                            onClick = {
-
-                            }
+                            enabled = viewModel.convoName.text.isNotEmpty(),
+                            onClick = { viewModel.createConversation() }
                         )
                     }
                 }
@@ -90,26 +85,28 @@ fun CreateConvoScreen(
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.large * 2))
                 }
 
-                item {
-                    Column {
-                        Text(
-                            text = stringResource(id = R.string.create_convo_preview_title),
-                            fontWeight = FontWeight.Black,
-                            fontSize = MaterialTheme.textSize.large,
-                            color = MaterialTheme.colors.onBackground
-                        )
+                if (viewModel.selectedUsers.isNotEmpty() && viewModel.convoName.text.isNotEmpty()) {
+                    item {
+                        Column {
+                            Text(
+                                text = stringResource(id = R.string.create_convo_preview_title),
+                                fontWeight = FontWeight.Black,
+                                fontSize = MaterialTheme.textSize.large,
+                                color = MaterialTheme.colors.onBackground
+                            )
 
-                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
+                            Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
 
-                        ConversationPreview(
-                            name = viewModel.convoName.text,
-                            users = viewModel.selectedUsers
-                        )
+                            ConversationPreview(
+                                name = viewModel.convoName.text,
+                                users = viewModel.selectedUsers
+                            )
+                        }
                     }
-                }
 
-                item {
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.large * 2))
+                    item {
+                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.large * 2))
+                    }
                 }
 
                 item {
@@ -133,7 +130,8 @@ fun CreateConvoScreen(
                 }
 
                 if (!viewModel.peopleLoading) {
-                    val people = viewModel.peopleState
+                    val people = viewModel.peopleState.toMutableList()
+                    people.removeIf { user -> user.id == currentUser.id }
 
                     item {
                         Column(
@@ -144,7 +142,9 @@ fun CreateConvoScreen(
                                     user = user,
                                     selected = viewModel.selectedUsers.contains(user)
                                 ) {
-                                    if (viewModel.selectedUsers.contains(user)) viewModel.selectedUsers.remove(user)
+                                    if (viewModel.selectedUsers.contains(user)) viewModel.selectedUsers.remove(
+                                        user
+                                    )
                                     else viewModel.selectedUsers.add(user)
                                 }
                             }
