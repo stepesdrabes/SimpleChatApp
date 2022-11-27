@@ -51,10 +51,9 @@ fun RegisterScreen(
     LaunchedEffect(viewModel, context) {
         viewModel.authResults.collect { result ->
             when (result) {
-                is RequestResult.Ok -> navigator.navigate(HomeScreenDestination) {
-                    popUpTo(LoginScreenDestination.route) {
-                        inclusive = true
-                    }
+                is RequestResult.Ok -> {
+                    navigator.popBackStack()
+                    navigator.navigate(HomeScreenDestination)
                 }
                 is RequestResult.Unauthorized -> Toast.makeText(
                     context,
@@ -112,7 +111,7 @@ fun RegisterScreen(
                         }
 
                         IconLabelTextField(
-                            iconId = R.drawable.ic_fi_rr_lock,
+                            iconId = R.drawable.ic_fi_rr_password,
                             label = stringResource(id = R.string.register_input_password_label),
                             isPassword = true
                         ) { newText ->

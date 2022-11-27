@@ -16,11 +16,9 @@ class AuthRepositoryImpl(
     override suspend fun signUp(username: String, password: String): RequestResult<Unit> {
         return try {
             api.signUp(
-                request = RegisterModel(
-                    username = username,
-                    password = password,
-                    image = null
-                )
+                username = username,
+                password = password,
+                image = null
             )
             signIn(username, password)
         } catch (e: HttpException) {

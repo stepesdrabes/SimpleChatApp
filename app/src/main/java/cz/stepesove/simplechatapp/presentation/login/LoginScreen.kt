@@ -45,10 +45,9 @@ fun LoginScreen(
     LaunchedEffect(viewModel, context) {
         viewModel.authResults.collect { result ->
             when (result) {
-                is RequestResult.Ok -> navigator.navigate(HomeScreenDestination) {
-                    popUpTo(LoginScreenDestination.route) {
-                        inclusive = true
-                    }
+                is RequestResult.Ok -> {
+                    navigator.popBackStack()
+                    navigator.navigate(HomeScreenDestination)
                 }
                 is RequestResult.Unauthorized -> Toast.makeText(
                     context,

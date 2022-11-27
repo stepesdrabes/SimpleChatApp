@@ -25,12 +25,13 @@ import cz.stepesove.simplechatapp.presentation.shared.theme.textSize
 @Composable
 fun IconLabelTextField(
     modifier: Modifier = Modifier.fillMaxWidth(),
+    textValue: String? = null,
     iconId: Int? = null,
     label: String,
     isPassword: Boolean = false,
     onValueChange: (TextFieldValue) -> Unit
 ) {
-    var value by remember { mutableStateOf(TextFieldValue("")) }
+    var value by remember { mutableStateOf(TextFieldValue(textValue ?: "")) }
     var visible by remember { mutableStateOf(false) }
 
     TextField(

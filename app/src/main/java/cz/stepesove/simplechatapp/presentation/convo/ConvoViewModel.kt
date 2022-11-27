@@ -1,4 +1,4 @@
-package cz.stepesove.simplechatapp.presentation.convos
+package cz.stepesove.simplechatapp.presentation.convo
 
 import androidx.lifecycle.ViewModel
 import cz.stepesove.simplechatapp.data.remote.repositories.ConversationRepository

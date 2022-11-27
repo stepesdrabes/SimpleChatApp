@@ -35,8 +35,8 @@ fun ConversationPreview(
         ) {
             ConversationIcon(
                 userImageNames = users.map { it.imageName },
-                backgroundColor = MaterialTheme.colors.surface,
-                borderColor = MaterialTheme.colors.background,
+                backgroundColor = MaterialTheme.colors.background,
+                borderColor = MaterialTheme.colors.surface,
             )
 
             Spacer(modifier = Modifier.width(MaterialTheme.spacing.large))

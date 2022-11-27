@@ -82,7 +82,10 @@ fun CreateConvoScreen(
                             enabled = viewModel.convoName.text.isNotEmpty() && viewModel.selectedUsers.size > 0,
                             onClick = {
                                 keyboardController?.hide()
-                                viewModel.createConversation()
+                                viewModel.createConversation(
+                                    currentUser = currentUser,
+                                    navigator = navigator
+                                )
                             }
                         )
 

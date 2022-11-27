@@ -12,12 +12,14 @@ import cz.stepesove.simplechatapp.data.remote.repositories.ConversationRepositor
 import cz.stepesove.simplechatapp.data.remote.repositories.PeopleRepository
 import cz.stepesove.simplechatapp.data.remote.responses.users.UserResponse
 import cz.stepesove.simplechatapp.data.remote.responses.conversations.ConversationResponse
+import cz.stepesove.simplechatapp.data.remote.signalr.OnlineHubManager
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val conversationRepository: ConversationRepository,
     private val peopleRepository: PeopleRepository,
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
+    private val onlineHubManager: OnlineHubManager
 ) : ViewModel() {
 
     var peopleLoading by mutableStateOf(false)
@@ -33,7 +35,6 @@ class HomeViewModel(
 
     init {
         currentUserLoading = true
-
         optionStaySignedIn = sharedPreferences.getBoolean("options.staySignedIn", true)
         optionsAppearAsOnline = sharedPreferences.getBoolean("options.appearAsOnline", true)
 
@@ -45,8 +46,11 @@ class HomeViewModel(
     private fun loadCurrentUser() {
         viewModelScope.launch {
             currentUserLoading = true
+
             val result = peopleRepository.currentUser()
             currentUserState = result.data
+            if(currentUserState != null) onlineHubManager.connect(optionsAppearAsOnline)
+
             currentUserLoading = false
         }
     }
@@ -82,13 +86,5 @@ class HomeViewModel(
     fun signOut(onSignOut: () -> Unit) {
         sharedPreferences.edit().remove("jwt").apply()
         onSignOut()
-    }
-
-    private fun connectToSocket() {
-        val hub = HubConnectionBuilder
-            .create(HttpRoutes.ONLINE_HUB_URL)
-            .withHeader("Authorization", "")
-            .withHandshakeResponseTimeout(5000)
-            .build()
     }
 }

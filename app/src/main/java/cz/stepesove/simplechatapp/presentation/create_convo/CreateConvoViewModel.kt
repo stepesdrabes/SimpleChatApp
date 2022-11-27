@@ -7,10 +7,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import cz.stepesove.simplechatapp.data.local.models.conversations.CreateConversationModel
 import cz.stepesove.simplechatapp.data.remote.repositories.ConversationRepository
 import cz.stepesove.simplechatapp.data.remote.repositories.PeopleRepository
 import cz.stepesove.simplechatapp.data.remote.responses.users.UserResponse
+import cz.stepesove.simplechatapp.presentation.destinations.ConvoScreenDestination
+import cz.stepesove.simplechatapp.presentation.destinations.CreateConvoScreenDestination
 import kotlinx.coroutines.launch
 
 class CreateConvoViewModel(
@@ -38,7 +41,7 @@ class CreateConvoViewModel(
         }
     }
 
-    fun createConversation() {
+    fun createConversation(currentUser: UserResponse, navigator: DestinationsNavigator) {
         val model = CreateConversationModel(
             name = convoName.text,
             imageFile = null,
@@ -47,7 +50,18 @@ class CreateConvoViewModel(
 
         viewModelScope.launch {
             val result = conversationRepository.createConversation(model)
+            if (result.data == null) return@launch
 
+            navigator.navigate(
+                ConvoScreenDestination(
+                    currentUser = currentUser,
+                    conversation = result.data
+                )
+            ) {
+                popUpTo(CreateConvoScreenDestination.route) {
+                    inclusive = true
+                }
+            }
         }
     }
 }

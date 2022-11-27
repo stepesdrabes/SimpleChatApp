@@ -1,4 +1,4 @@
-package cz.stepesove.simplechatapp.presentation.convos
+package cz.stepesove.simplechatapp.presentation.convo
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,8 +16,8 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import cz.stepesove.simplechatapp.data.remote.responses.conversations.ConversationResponse
 import cz.stepesove.simplechatapp.data.remote.responses.users.UserResponse
-import cz.stepesove.simplechatapp.presentation.convos.components.NewMessageBar
-import cz.stepesove.simplechatapp.presentation.create_convo.CreateConvoViewModel
+import cz.stepesove.simplechatapp.presentation.convo.components.ConvoMessage
+import cz.stepesove.simplechatapp.presentation.convo.components.NewMessageBar
 import cz.stepesove.simplechatapp.presentation.destinations.UpdateConvoScreenDestination
 import cz.stepesove.simplechatapp.presentation.home.components.conversation.ConversationIcon
 import cz.stepesove.simplechatapp.presentation.shared.components.BackAppBar
@@ -67,14 +67,31 @@ fun ConvoScreen(
             )
         },
         bottomBar = {
-            NewMessageBar()
+            NewMessageBar(currentUser = currentUser)
         }
     ) {
-        Box(modifier = Modifier.padding(it)) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+        ) {
             LazyColumn(
-                contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.pagePadding)
+                reverseLayout = true,
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.pagePadding),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
             ) {
+                item {
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+                }
 
+                items(count = 100) { index ->
+                    ConvoMessage(index.toString())
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+                }
             }
         }
     }

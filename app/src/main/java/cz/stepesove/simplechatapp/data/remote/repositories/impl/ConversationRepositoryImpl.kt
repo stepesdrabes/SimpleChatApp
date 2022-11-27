@@ -10,6 +10,8 @@ import cz.stepesove.simplechatapp.data.remote.api.ConversationApi
 import cz.stepesove.simplechatapp.data.remote.repositories.ConversationRepository
 import cz.stepesove.simplechatapp.data.remote.responses.conversations.ConversationMessageResponse
 import cz.stepesove.simplechatapp.data.remote.responses.conversations.ConversationResponse
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class ConversationRepositoryImpl(
     private val conversationApi: ConversationApi,
@@ -34,7 +36,14 @@ class ConversationRepositoryImpl(
         return try {
             val token =
                 sharedPreferences.getString("jwt", null) ?: return RequestResult.Unauthorized()
-            val conversations = conversationApi.createConversation("Bearer $token", model)
+
+            val conversations = conversationApi.createConversation(
+                token = "Bearer $token",
+                name = model.name.toRequestBody("multipart/form-data".toMediaTypeOrNull()),
+                imageFile = model.imageFile,
+                users = model.users
+            )
+
             RequestResult.Ok(conversations)
         } catch (e: HttpException) {
             if (e.response.code == 401) RequestResult.Unauthorized()
@@ -51,7 +60,7 @@ class ConversationRepositoryImpl(
         return try {
             val token =
                 sharedPreferences.getString("jwt", null) ?: return RequestResult.Unauthorized()
-            val conversation = conversationApi.updateConversation("Bearer $token", model)
+            val conversation = conversationApi.updateConversation("Bearer $token", id, model)
             RequestResult.Ok(conversation)
         } catch (e: HttpException) {
             when (e.response.code) {
@@ -82,14 +91,35 @@ class ConversationRepositoryImpl(
     }
 
     override suspend fun getConversationMessages(id: String): RequestResult<List<ConversationMessageResponse>> {
-        TODO("Not yet implemented")
+        return try {
+            val token =
+                sharedPreferences.getString("jwt", null) ?: return RequestResult.Unauthorized()
+            val messages = conversationApi.getConversationMessages("Bearer $token", id)
+            RequestResult.Ok(messages)
+        } catch (e: HttpException) {
+            if (e.response.code == 401) RequestResult.Unauthorized()
+            else RequestResult.UnknownError()
+        } catch (e: Exception) {
+            RequestResult.UnknownError()
+        }
     }
 
     override suspend fun createConversationMessage(
         conversationId: String,
         model: CreateConversationMessageModel
     ): RequestResult<ConversationMessageResponse> {
-        TODO("Not yet implemented")
+        return try {
+            val token =
+                sharedPreferences.getString("jwt", null) ?: return RequestResult.Unauthorized()
+            val message =
+                conversationApi.createConversationMessage(token = "Bearer $token", model = model)
+            RequestResult.Ok(message)
+        } catch (e: HttpException) {
+            if (e.response.code == 401) RequestResult.Unauthorized()
+            else RequestResult.UnknownError()
+        } catch (e: Exception) {
+            RequestResult.UnknownError()
+        }
     }
 
     override suspend fun deleteConversationMessage(
