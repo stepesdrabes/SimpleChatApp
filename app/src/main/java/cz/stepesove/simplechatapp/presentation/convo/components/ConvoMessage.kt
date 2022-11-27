@@ -1,10 +1,8 @@
 package cz.stepesove.simplechatapp.presentation.convo.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -17,12 +15,14 @@ import androidx.compose.ui.unit.dp
 import cz.stepesove.simplechatapp.data.remote.HttpRoutes
 import cz.stepesove.simplechatapp.presentation.shared.components.RoundedImage
 import cz.stepesove.simplechatapp.presentation.shared.theme.HighlightBlue
+import cz.stepesove.simplechatapp.presentation.shared.theme.HighlightGreen
 import cz.stepesove.simplechatapp.presentation.shared.theme.spacing
 import cz.stepesove.simplechatapp.presentation.shared.theme.textSize
 
 @Composable
 fun ConvoMessage(
-    text: String
+    text: String,
+    online: Boolean
     //currentUser: UserResponse,
     //conversationMessage: ConversationMessageResponse
 ) {
@@ -30,10 +30,20 @@ fun ConvoMessage(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
     ) {
-        RoundedImage(
-            size = 32.dp,
-            url = HttpRoutes.userImageUrl(null)
-        )
+        Box {
+            RoundedImage(
+                size = 32.dp,
+                url = HttpRoutes.userImageUrl(null)
+            )
+
+            if (online) Box(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .size(8.dp)
+                    .clip(CircleShape)
+                    .background(HighlightGreen)
+            )
+        }
 
         Box(
             modifier = Modifier

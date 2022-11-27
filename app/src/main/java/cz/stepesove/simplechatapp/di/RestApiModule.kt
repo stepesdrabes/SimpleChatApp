@@ -3,6 +3,7 @@ package cz.stepesove.simplechatapp.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import cz.stepesove.simplechatapp.data.remote.HttpRoutes
 import cz.stepesove.simplechatapp.data.remote.api.AuthApi
 import cz.stepesove.simplechatapp.data.remote.api.ConversationApi
 import cz.stepesove.simplechatapp.data.remote.api.PeopleApi
@@ -21,7 +22,7 @@ val RestApiModule = module {
     // Auth API
     single<AuthApi> {
         Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:5000/api/")
+            .baseUrl("${HttpRoutes.BASE_URL}/api/")
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(AuthApi::class.java)
@@ -30,7 +31,7 @@ val RestApiModule = module {
     // People API
     single<PeopleApi> {
         Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:5000/api/")
+            .baseUrl("${HttpRoutes.BASE_URL}/api/")
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(PeopleApi::class.java)
@@ -39,7 +40,7 @@ val RestApiModule = module {
     // Conversation API
     single<ConversationApi> {
         Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:5000/api/")
+            .baseUrl("${HttpRoutes.BASE_URL}/api/")
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(ConversationApi::class.java)

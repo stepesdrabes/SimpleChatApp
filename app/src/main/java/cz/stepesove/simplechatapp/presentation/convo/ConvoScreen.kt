@@ -79,14 +79,14 @@ fun ConvoScreen(
                 reverseLayout = true,
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.pagePadding),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
             ) {
                 item {
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
                 }
 
                 items(count = 100) { index ->
-                    ConvoMessage(index.toString())
+                    ConvoMessage(index.toString(), true)
                 }
 
                 item {

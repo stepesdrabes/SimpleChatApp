@@ -14,7 +14,7 @@ class OnlineHubManager(
     private var connected: Boolean = false
     private var hubConnection: HubConnection? = null
 
-    private val onlineUsers = mutableStateListOf<String>()
+    val onlineUsers = mutableStateListOf<String>()
 
     fun connect(appearAsOnline: Boolean) {
         if (connected) return
@@ -27,20 +27,27 @@ class OnlineHubManager(
             .withHandshakeResponseTimeout(5000)
             .build()
 
-        hub.start().andThen {
+        println("Starting connection...")
+
+        hub.start().blockingSubscribe {
             onlineUsers.clear()
             connected = hub.connectionState == HubConnectionState.CONNECTED
             if (connected) {
                 addListeners(hub)
                 hubConnection = hub
+
+                println("Adding listeners...")
             }
         }
     }
+
+    fun closeConnection() = hubConnection?.close()
 
     private fun addListeners(hub: HubConnection) {
         hub.on("OnlineUsers", { users: List<String> ->
             onlineUsers.clear()
             onlineUsers.addAll(users)
+            println(users)
         }, List::class.java)
 
         hub.on("UserConnected", { userId: String ->
@@ -54,6 +61,7 @@ class OnlineHubManager(
         }, String::class.java)
 
         hub.onClosed {
+            println("Connection closed: ${it.message ?: "No message"}")
             onlineUsers.clear()
             connected = false
             hubConnection = null

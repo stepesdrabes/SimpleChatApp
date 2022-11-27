@@ -1,7 +1,9 @@
 package cz.stepesove.simplechatapp.presentation.create_convo.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -16,14 +18,12 @@ import cz.stepesove.simplechatapp.R
 import cz.stepesove.simplechatapp.data.remote.HttpRoutes
 import cz.stepesove.simplechatapp.data.remote.responses.users.UserResponse
 import cz.stepesove.simplechatapp.presentation.shared.components.RoundedImage
-import cz.stepesove.simplechatapp.presentation.shared.theme.HighlightBlue
-import cz.stepesove.simplechatapp.presentation.shared.theme.HighlightRed
-import cz.stepesove.simplechatapp.presentation.shared.theme.spacing
-import cz.stepesove.simplechatapp.presentation.shared.theme.textSize
+import cz.stepesove.simplechatapp.presentation.shared.theme.*
 
 @Composable
 fun AddPersonCard(
     user: UserResponse,
+    online: Boolean,
     selected: Boolean,
     onSelect: () -> Unit
 ) {
@@ -39,10 +39,20 @@ fun AddPersonCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.large)
             ) {
-                RoundedImage(
-                    size = 48.dp,
-                    url = HttpRoutes.userImageUrl(user.imageName)
-                )
+                Box {
+                    RoundedImage(
+                        size = 48.dp,
+                        url = HttpRoutes.userImageUrl(user.imageName)
+                    )
+
+                    if (online) Box(
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .size(10.dp)
+                            .clip(CircleShape)
+                            .background(HighlightGreen)
+                    )
+                }
 
                 Text(
                     text = user.username,

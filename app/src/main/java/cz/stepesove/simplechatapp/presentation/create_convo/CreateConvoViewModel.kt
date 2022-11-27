@@ -12,13 +12,15 @@ import cz.stepesove.simplechatapp.data.local.models.conversations.CreateConversa
 import cz.stepesove.simplechatapp.data.remote.repositories.ConversationRepository
 import cz.stepesove.simplechatapp.data.remote.repositories.PeopleRepository
 import cz.stepesove.simplechatapp.data.remote.responses.users.UserResponse
+import cz.stepesove.simplechatapp.data.remote.signalr.OnlineHubManager
 import cz.stepesove.simplechatapp.presentation.destinations.ConvoScreenDestination
 import cz.stepesove.simplechatapp.presentation.destinations.CreateConvoScreenDestination
 import kotlinx.coroutines.launch
 
 class CreateConvoViewModel(
     private val peopleRepository: PeopleRepository,
-    private val conversationRepository: ConversationRepository
+    private val conversationRepository: ConversationRepository,
+    val onlineHubManager: OnlineHubManager
 ) : ViewModel() {
 
     var peopleLoading by mutableStateOf(false)

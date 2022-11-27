@@ -160,7 +160,8 @@ fun CreateConvoScreen(
                             people.forEach { user ->
                                 AddPersonCard(
                                     user = user,
-                                    selected = viewModel.selectedUsers.contains(user)
+                                    selected = viewModel.selectedUsers.contains(user),
+                                    online = viewModel.onlineHubManager.onlineUsers.contains(user.id)
                                 ) {
                                     if (viewModel.selectedUsers.contains(user))
                                         viewModel.selectedUsers.remove(user)

@@ -19,7 +19,7 @@ class HomeViewModel(
     private val conversationRepository: ConversationRepository,
     private val peopleRepository: PeopleRepository,
     private val sharedPreferences: SharedPreferences,
-    private val onlineHubManager: OnlineHubManager
+    val onlineHubManager: OnlineHubManager
 ) : ViewModel() {
 
     var peopleLoading by mutableStateOf(false)
@@ -49,7 +49,7 @@ class HomeViewModel(
 
             val result = peopleRepository.currentUser()
             currentUserState = result.data
-            if(currentUserState != null) onlineHubManager.connect(optionsAppearAsOnline)
+            if (currentUserState != null) onlineHubManager.connect(optionsAppearAsOnline)
 
             currentUserLoading = false
         }
