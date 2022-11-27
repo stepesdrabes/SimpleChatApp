@@ -1,5 +1,6 @@
 package cz.stepesove.simplechatapp.presentation.home
 
+import android.content.SharedPreferences
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val conversationRepository: ConversationRepository,
     private val peopleRepository: PeopleRepository,
+    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
     var peopleLoading by mutableStateOf(false)
@@ -26,8 +28,14 @@ class HomeViewModel(
     var conversationsState by mutableStateOf<List<ConversationResponse>>(emptyList())
     var currentUserState by mutableStateOf<UserResponse?>(null)
 
+    var optionStaySignedIn by mutableStateOf(false)
+    var optionsAppearAsOnline by mutableStateOf(false)
+
     init {
         currentUserLoading = true
+
+        optionStaySignedIn = sharedPreferences.getBoolean("options.staySignedIn", true)
+        optionsAppearAsOnline = sharedPreferences.getBoolean("options.appearAsOnline", true)
 
         loadCurrentUser()
         loadConversations()
@@ -59,6 +67,21 @@ class HomeViewModel(
             peopleState = result.data ?: emptyList()
             peopleLoading = false
         }
+    }
+
+    fun toggleOptionStaySignedIn() {
+        optionStaySignedIn = !optionStaySignedIn
+        sharedPreferences.edit().putBoolean("options.staySignedIn", optionStaySignedIn).apply()
+    }
+
+    fun toggleOptionAppearAsOnline() {
+        optionsAppearAsOnline = !optionsAppearAsOnline
+        sharedPreferences.edit().putBoolean("options.appearAsOnline", optionsAppearAsOnline).apply()
+    }
+
+    fun signOut(onSignOut: () -> Unit) {
+        sharedPreferences.edit().remove("jwt").apply()
+        onSignOut()
     }
 
     private fun connectToSocket() {

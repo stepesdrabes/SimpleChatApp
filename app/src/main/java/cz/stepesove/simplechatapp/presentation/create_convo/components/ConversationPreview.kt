@@ -33,7 +33,11 @@ fun ConversationPreview(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ConversationIcon(userImageNames = users.map { it.imageName })
+            ConversationIcon(
+                userImageNames = users.map { it.imageName },
+                backgroundColor = MaterialTheme.colors.surface,
+                borderColor = MaterialTheme.colors.background,
+            )
 
             Spacer(modifier = Modifier.width(MaterialTheme.spacing.large))
 

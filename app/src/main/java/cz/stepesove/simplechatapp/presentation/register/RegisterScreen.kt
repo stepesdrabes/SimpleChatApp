@@ -11,8 +11,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,6 +34,7 @@ import cz.stepesove.simplechatapp.presentation.shared.theme.spacing
 import cz.stepesove.simplechatapp.presentation.shared.theme.textSize
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalComposeUiApi::class)
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Destination
@@ -42,6 +45,7 @@ fun RegisterScreen(
     val viewModel: RegisterViewModel = koinViewModel()
     val state = viewModel.state
     val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     val error = stringResource(id = R.string.unknown_error_occurred)
     LaunchedEffect(viewModel, context) {
@@ -124,6 +128,7 @@ fun RegisterScreen(
                         iconId = R.drawable.ic_fi_rr_sign_in,
                         enabled = !state.isLoading,
                         onClick = {
+                            keyboardController?.hide()
                             viewModel.onEvent(RegisterUiEvent.Register)
                         },
                         color = HighlightBlue,

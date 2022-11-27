@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -24,16 +25,18 @@ fun ConversationRoundedImage(
     size: Dp,
     url: String,
     contentDescription: String? = null,
-    strokeWidth: Dp = 3.dp
+    strokeWidth: Dp = 3.dp,
+    backgroundColor: Color = MaterialTheme.colors.surface,
+    borderColor: Color = MaterialTheme.colors.background
 ) {
     Box(
         modifier = modifier
             .size(size)
             .clip(CircleShape)
-            .background(MaterialTheme.colors.surface)
+            .background(backgroundColor)
             .border(
                 width = strokeWidth,
-                color = MaterialTheme.colors.background,
+                color = borderColor,
                 shape = CircleShape
             )
     ) {

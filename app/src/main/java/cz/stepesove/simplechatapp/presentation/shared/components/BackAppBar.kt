@@ -28,7 +28,8 @@ import cz.stepesove.simplechatapp.presentation.shared.theme.textSize
 fun BackAppBar(
     navigator: DestinationsNavigator,
     showBackText: Boolean = true,
-    titleContent: (@Composable () -> Unit)? = null
+    titleContent: (@Composable () -> Unit)? = null,
+    moreAction: (() -> Unit)? = null
 ) {
     val surfaceColor = MaterialTheme.colors.surface
 
@@ -54,9 +55,7 @@ fun BackAppBar(
                         .align(Alignment.CenterStart)
                         .fillMaxHeight()
                         .clip(MaterialTheme.shapes.medium)
-                        .clickable {
-                            navigator.navigateUp()
-                        }
+                        .clickable { navigator.navigateUp() }
                         .padding(horizontal = MaterialTheme.spacing.pagePadding / 2),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -79,6 +78,24 @@ fun BackAppBar(
                 }
 
                 titleContent?.let { Box(modifier = Modifier.align(Alignment.Center)) { it() } }
+
+                moreAction?.let {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .fillMaxHeight()
+                            .clip(MaterialTheme.shapes.medium)
+                            .clickable { moreAction.invoke() }
+                            .padding(horizontal = MaterialTheme.spacing.pagePadding / 2),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_fi_br_menu_burger),
+                            tint = MaterialTheme.colors.onBackground,
+                            contentDescription = null
+                        )
+                    }
+                }
             }
         }
     )

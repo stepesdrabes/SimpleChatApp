@@ -6,8 +6,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class ConversationUserResponse(
-    val id: Int,
     val nickname: String?,
+    val userId: String,
     val user: UserResponse,
+    val conversationId: String?,
     val addedAt: String
 ) : Parcelable

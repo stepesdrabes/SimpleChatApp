@@ -10,6 +10,6 @@ data class ConversationResponse(
     val name: String,
     val imageName: String?,
     val owner: UserResponse,
-    val lastMessage: ConversationMessageResponse? = null,
-    val users: List<ConversationUserResponse>
+    val lastMessage: ConversationMessageResponse?,
+    val conversationUsers: List<ConversationUserResponse>
 ) : Parcelable

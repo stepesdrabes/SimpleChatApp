@@ -8,7 +8,9 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -23,6 +25,7 @@ import cz.stepesove.simplechatapp.presentation.shared.theme.spacing
 import cz.stepesove.simplechatapp.presentation.shared.theme.textSize
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Destination
 @Composable
 fun CreateConvoScreen(
@@ -30,6 +33,7 @@ fun CreateConvoScreen(
     navigator: DestinationsNavigator
 ) {
     val viewModel: CreateConvoViewModel = koinViewModel()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(
         topBar = { BackAppBar(navigator = navigator) },
@@ -75,8 +79,21 @@ fun CreateConvoScreen(
                         IconLabelButton(
                             label = stringResource(id = R.string.create_convo_create_button_label),
                             iconId = R.drawable.ic_fi_rr_check,
-                            enabled = viewModel.convoName.text.isNotEmpty(),
-                            onClick = { viewModel.createConversation() }
+                            enabled = viewModel.convoName.text.isNotEmpty() && viewModel.selectedUsers.size > 0,
+                            onClick = {
+                                keyboardController?.hide()
+                                viewModel.createConversation()
+                            }
+                        )
+
+                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+
+                        Text(
+                            text = stringResource(id = R.string.create_convo_requirements_label),
+                            color = MaterialTheme.colors.onSurface,
+                            fontSize = MaterialTheme.textSize.normal,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
@@ -142,9 +159,8 @@ fun CreateConvoScreen(
                                     user = user,
                                     selected = viewModel.selectedUsers.contains(user)
                                 ) {
-                                    if (viewModel.selectedUsers.contains(user)) viewModel.selectedUsers.remove(
-                                        user
-                                    )
+                                    if (viewModel.selectedUsers.contains(user))
+                                        viewModel.selectedUsers.remove(user)
                                     else viewModel.selectedUsers.add(user)
                                 }
                             }

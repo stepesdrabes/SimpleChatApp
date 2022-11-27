@@ -9,8 +9,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -26,6 +28,7 @@ import cz.stepesove.simplechatapp.presentation.shared.theme.HighlightBlue
 import cz.stepesove.simplechatapp.presentation.shared.theme.spacing
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalComposeUiApi::class)
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Destination
@@ -36,6 +39,7 @@ fun LoginScreen(
     val viewModel: LoginViewModel = koinViewModel()
     val state = viewModel.state
     val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     val error = stringResource(id = R.string.unknown_error_occurred)
     LaunchedEffect(viewModel, context) {
@@ -96,6 +100,7 @@ fun LoginScreen(
                         iconId = R.drawable.ic_fi_rr_key,
                         enabled = !state.isLoading,
                         onClick = {
+                            keyboardController?.hide()
                             viewModel.onEvent(LoginUiEvent.Login)
                         },
                         color = HighlightBlue
