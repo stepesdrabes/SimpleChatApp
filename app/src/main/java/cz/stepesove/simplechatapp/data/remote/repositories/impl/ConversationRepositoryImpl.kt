@@ -46,9 +46,11 @@ class ConversationRepositoryImpl(
 
             RequestResult.Ok(conversations)
         } catch (e: HttpException) {
+            e.printStackTrace()
             if (e.response.code == 401) RequestResult.Unauthorized()
             else RequestResult.UnknownError()
         } catch (e: Exception) {
+            e.printStackTrace()
             RequestResult.UnknownError()
         }
     }
@@ -120,11 +122,9 @@ class ConversationRepositoryImpl(
 
             RequestResult.Ok(message)
         } catch (e: HttpException) {
-            e.printStackTrace()
             if (e.response.code == 401) RequestResult.Unauthorized()
             else RequestResult.UnknownError()
         } catch (e: Exception) {
-            e.printStackTrace()
             RequestResult.UnknownError()
         }
     }

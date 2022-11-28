@@ -13,7 +13,7 @@ val ViewModelsModule = module {
     viewModel { LandingViewModel(get(), get()) }
     viewModel { LoginViewModel(get()) }
     viewModel { RegisterViewModel(get()) }
-    viewModel { HomeViewModel(get(), get(), get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
     viewModel { CreateConvoViewModel(get(), get(), get()) }
-    viewModel { ConvoViewModel(get(), get()) }
+    viewModel { ConvoViewModel(get(), get(), get()) }
 }

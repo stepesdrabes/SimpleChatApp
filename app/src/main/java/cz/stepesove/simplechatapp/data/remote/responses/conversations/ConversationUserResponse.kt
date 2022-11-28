@@ -9,6 +9,6 @@ class ConversationUserResponse(
     val nickname: String?,
     val userId: String,
     val user: UserResponse,
-    val conversationId: String?,
+    val conversationId: String,
     val addedAt: String
 ) : Parcelable

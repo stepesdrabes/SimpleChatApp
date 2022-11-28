@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -40,6 +41,15 @@ fun ConvoScreen(
 
     LaunchedEffect(key1 = conversation) {
         viewModel.loadMessages(conversation.id)
+    }
+
+    val context = LocalContext.current
+
+    LaunchedEffect(viewModel, context) {
+        viewModel.messagesHubManager.messageResults.collect { result ->
+            if (result.conversationId != conversation.id) return@collect
+            viewModel.messages.add(0, result)
+        }
     }
 
     Scaffold(

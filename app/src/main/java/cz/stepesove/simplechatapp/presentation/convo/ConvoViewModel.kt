@@ -9,12 +9,14 @@ import androidx.lifecycle.viewModelScope
 import cz.stepesove.simplechatapp.data.local.models.conversations.CreateConversationMessageModel
 import cz.stepesove.simplechatapp.data.remote.repositories.ConversationRepository
 import cz.stepesove.simplechatapp.data.remote.responses.conversations.ConversationMessageResponse
+import cz.stepesove.simplechatapp.data.remote.signalr.MessagesHubManager
 import cz.stepesove.simplechatapp.data.remote.signalr.OnlineHubManager
 import kotlinx.coroutines.launch
 
 class ConvoViewModel(
     private val conversationRepository: ConversationRepository,
-    val onlineHubManager: OnlineHubManager
+    val onlineHubManager: OnlineHubManager,
+    val messagesHubManager: MessagesHubManager
 ) : ViewModel() {
 
     var newMessage by mutableStateOf("")

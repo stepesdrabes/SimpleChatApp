@@ -10,6 +10,7 @@ import cz.stepesove.simplechatapp.data.remote.repositories.ConversationRepositor
 import cz.stepesove.simplechatapp.data.remote.repositories.PeopleRepository
 import cz.stepesove.simplechatapp.data.remote.responses.conversations.ConversationResponse
 import cz.stepesove.simplechatapp.data.remote.responses.users.UserResponse
+import cz.stepesove.simplechatapp.data.remote.signalr.MessagesHubManager
 import cz.stepesove.simplechatapp.data.remote.signalr.OnlineHubManager
 import kotlinx.coroutines.launch
 
@@ -17,7 +18,8 @@ class HomeViewModel(
     private val conversationRepository: ConversationRepository,
     private val peopleRepository: PeopleRepository,
     private val sharedPreferences: SharedPreferences,
-    val onlineHubManager: OnlineHubManager
+    val onlineHubManager: OnlineHubManager,
+    val messagesHubManager: MessagesHubManager
 ) : ViewModel() {
 
     var peopleLoading by mutableStateOf(false)
@@ -47,7 +49,11 @@ class HomeViewModel(
 
             val result = peopleRepository.currentUser()
             currentUserState = result.data
-            if (currentUserState != null) onlineHubManager.connect(optionsAppearAsOnline)
+
+            if (currentUserState != null) {
+                onlineHubManager.connect(optionsAppearAsOnline)
+                messagesHubManager.connect()
+            }
 
             currentUserLoading = false
         }
