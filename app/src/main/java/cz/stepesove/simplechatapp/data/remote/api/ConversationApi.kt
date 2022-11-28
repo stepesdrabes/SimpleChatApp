@@ -47,6 +47,7 @@ interface ConversationApi {
     @POST(HttpRoutes.MESSAGES_URL + "/{id}")
     suspend fun createConversationMessage(
         @Header("Authorization") token: String,
+        @Path("id") id: String,
         @Body model: CreateConversationMessageModel
     ): ConversationMessageResponse
 }

@@ -6,12 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.microsoft.signalr.HubConnectionBuilder
-import cz.stepesove.simplechatapp.data.remote.HttpRoutes
 import cz.stepesove.simplechatapp.data.remote.repositories.ConversationRepository
 import cz.stepesove.simplechatapp.data.remote.repositories.PeopleRepository
-import cz.stepesove.simplechatapp.data.remote.responses.users.UserResponse
 import cz.stepesove.simplechatapp.data.remote.responses.conversations.ConversationResponse
+import cz.stepesove.simplechatapp.data.remote.responses.users.UserResponse
 import cz.stepesove.simplechatapp.data.remote.signalr.OnlineHubManager
 import kotlinx.coroutines.launch
 

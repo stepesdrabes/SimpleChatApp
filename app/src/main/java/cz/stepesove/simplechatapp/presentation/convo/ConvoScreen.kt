@@ -2,10 +2,12 @@ package cz.stepesove.simplechatapp.presentation.convo
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -35,6 +37,10 @@ fun ConvoScreen(
 ) {
     val viewModel: ConvoViewModel = koinViewModel()
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    LaunchedEffect(key1 = conversation) {
+        viewModel.loadMessages(conversation.id)
+    }
 
     Scaffold(
         topBar = {
@@ -67,7 +73,15 @@ fun ConvoScreen(
             )
         },
         bottomBar = {
-            NewMessageBar(currentUser = currentUser)
+            NewMessageBar(
+                value = viewModel.newMessage,
+                currentUser = currentUser,
+                sending = viewModel.newMessageSending,
+                onValueChanged = { viewModel.newMessage = it }
+            ) {
+                keyboardController?.hide()
+                viewModel.createMessage(conversationId = conversation.id)
+            }
         }
     ) {
         Box(
@@ -85,8 +99,22 @@ fun ConvoScreen(
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
                 }
 
-                items(count = 100) { index ->
-                    ConvoMessage(index.toString(), true)
+                val messages = viewModel.messages
+
+                items(count = messages.size) { index ->
+                    val message = messages[index]
+
+                    ConvoMessage(
+                        conversationMessage = message,
+                        currentUser = currentUser,
+                        online = viewModel.onlineHubManager.onlineUsers.contains(message.author.user.id)
+                    )
+                }
+
+                if (viewModel.messagesLoading) item {
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
                 }
 
                 item {

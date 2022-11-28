@@ -35,29 +35,33 @@ import cz.stepesove.simplechatapp.presentation.shared.theme.textSize
 
 @Composable
 fun NewMessageBar(
-    currentUser: UserResponse
+    value: String,
+    currentUser: UserResponse,
+    sending: Boolean,
+    onValueChanged: (String) -> Unit,
+    onSend: () -> Unit
 ) {
-    var value by remember { mutableStateOf(TextFieldValue("")) }
     val keyboardState by keyboardAsState()
 
-    val surfaceColor = MaterialTheme.colors.surface
+    if (sending) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(72.dp)
+                .background(MaterialTheme.colors.background)
+                .padding(all = MaterialTheme.spacing.pagePadding / 2)
+        ) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        }
+
+        return
+    }
 
     Row(
         modifier = Modifier
             .background(MaterialTheme.colors.background)
             .padding(all = MaterialTheme.spacing.pagePadding / 2)
-            .blur(8.dp)
-            .drawBehind {
-                val strokeWidth = 1.5f
-
-                drawLine(
-                    brush = SolidColor(surfaceColor),
-                    strokeWidth = strokeWidth,
-                    cap = StrokeCap.Square,
-                    start = Offset(x = 0f, y = 0f),
-                    end = Offset(x = size.width, y = 0f)
-                )
-            },
+            .blur(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AnimatedVisibility(
@@ -96,9 +100,7 @@ fun NewMessageBar(
                             end = MaterialTheme.spacing.pagePadding - MaterialTheme.spacing.small
                         )
                         .clip(MaterialTheme.shapes.medium)
-                        .clickable {
-
-                        }
+                        .clickable { if (value.isNotEmpty()) onSend.invoke() }
                         .padding(MaterialTheme.spacing.small)
                 ) {
                     Icon(
@@ -122,7 +124,7 @@ fun NewMessageBar(
             },
             maxLines = 8,
             onValueChange = { newText ->
-                value = newText
+                onValueChanged.invoke(newText)
             }
         )
     }

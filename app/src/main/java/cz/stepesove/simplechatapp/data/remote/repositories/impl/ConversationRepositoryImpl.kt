@@ -111,13 +111,20 @@ class ConversationRepositoryImpl(
         return try {
             val token =
                 sharedPreferences.getString("jwt", null) ?: return RequestResult.Unauthorized()
-            val message =
-                conversationApi.createConversationMessage(token = "Bearer $token", model = model)
+
+            val message = conversationApi.createConversationMessage(
+                token = "Bearer $token",
+                id = conversationId,
+                model = model
+            )
+
             RequestResult.Ok(message)
         } catch (e: HttpException) {
+            e.printStackTrace()
             if (e.response.code == 401) RequestResult.Unauthorized()
             else RequestResult.UnknownError()
         } catch (e: Exception) {
+            e.printStackTrace()
             RequestResult.UnknownError()
         }
     }
