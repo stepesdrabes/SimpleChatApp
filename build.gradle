@@ -1,0 +1,18 @@
+buildscript {
+    ext {
+        compose_version = "1.3.2"
+        compose_ui_version = "1.3.1"
+        retrofit_version = "2.9.0"
+        koin_version = "3.2.2"
+        koin_android_version = "3.3.0"
+        coil_version = "2.2.2"
+        signal_r_version = "6.0.11"
+        compose_destinations_version = "1.7.27-beta"
+    }
+}
+
+plugins {
+    id 'com.android.application' version '7.3.1' apply false
+    id 'com.android.library' version '7.3.1' apply false
+    id 'org.jetbrains.kotlin.android' version '1.7.20' apply false
+}

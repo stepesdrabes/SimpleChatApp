@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="highlight_blue">#FF573DEC</color>
+    <color name="highlight_green">#FF31B24E</color>
+    <color name="off_black">#FF120D1D</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

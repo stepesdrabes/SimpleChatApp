@@ -1,0 +1,83 @@
+<resources>
+    <!-- Shared -->
+    <string name="app_name">Convos</string>
+    <string name="app_github_link">Convos</string>
+    <string name="back">Back</string>
+    <string name="unknown_error_occurred">Unknown error occurred</string>
+
+    <!-- Landing screen -->
+    <string name="landing_title_text">Connect with family or friendly simply and freely</string>
+    <string name="landing_login_button_label">Login</string>
+    <string name="landing_register_button_label">Register new account</string>
+
+    <!-- About App screen -->
+    <string name="about_app_title">About App</string>
+    <string name="about_app_description">This app is a simple chat app that was made by students of OSSP Kolín.</string>
+    <string name="about_app_open_github_repo">Open up GitHub repository</string>
+    <string name="about_app_open_author_github_profile">Open up GitHub profile</string>
+    <string name="about_app_used_libraries">Used libraries</string>
+    <string name="about_app_author_info">Authors of the app</string>
+    <string-array name="about_app_author_names">
+        <item>Štěpán Drábek</item>
+        <item>Štěpán Kolarovský</item>
+    </string-array>
+    <string-array name="about_app_author_pictures">
+        <item>https://avatars.githubusercontent.com/u/74901420?v=4</item>
+        <item>https://www.rainforest-alliance.org/wp-content/uploads/2021/06/capybara-square-1.jpg.optimal.jpg</item>
+    </string-array>
+    <string-array name="about_app_libraries_names">
+        <item>Jetpack Compose</item>
+        <item>Coil</item>
+        <item>Koin</item>
+        <item>Retrofit</item>
+        <item>Mochi</item>
+        <item>SignalR</item>
+        <item>Compose destinations</item>
+    </string-array>
+    <string-array name="about_app_libraries_description">
+        <item>UI framework</item>
+        <item>Image loading</item>
+        <item>Dependency injection</item>
+        <item>HTTP client</item>
+        <item>JSON serialization</item>
+        <item>Realtime communication</item>
+        <item>Navigation</item>
+    </string-array>
+
+    <!-- Login screen -->
+    <string name="login_title">Sign into Existing Account</string>
+    <string name="login_login_button_label">Sign in</string>
+    <string name="login_input_username_label">Username</string>
+    <string name="login_input_password_label">Password</string>
+
+    <!-- Register screen -->
+    <string name="register_title">Register new Account</string>
+    <string name="register_choose_profile_image_label">Choose profile picture by clicking circle above. You can change the image anytime after registering</string>
+    <string name="register_input_username_label">Username</string>
+    <string name="register_input_password_label">Password</string>
+    <string name="register_register_button_label">Sign up</string>
+
+    <!-- Convos screen -->
+    <string name="convos_title">Convos</string>
+
+    <!-- Create convo screen -->
+    <string name="create_convo_title">Create new Convo</string>
+    <string name="create_convo_choose_convo_image_label">Choose convo picture by clicking circle above. You don\'t have to choose an image, in which case conversation icon will be composed by profile pictures of users.</string>
+    <string name="create_convo_input_name_label">Convo name</string>
+    <string name="create_convo_requirements_label">You need to choose a name and add at least 1 user to the Convo to be able to create it!</string>
+    <string name="create_convo_create_button_label">Create Convo</string>
+    <string name="create_convo_preview_title">Preview</string>
+    <string name="create_convo_add_people_title">Add people - {selected}</string>
+
+    <!-- Update convo screen -->
+    <string name="update_convo_title">Update Convo</string>
+
+    <!-- People screen -->
+    <string name="people_title">People</string>
+
+    <!-- Options screen -->
+    <string name="profile_title">Edit Profile</string>
+    <string name="options_title">Options</string>
+    <string name="options_sign_out_button_label">Sign out</string>
+    <string name="options_save_profile_changes_button_label">Save profile changes</string>
+</resources>
